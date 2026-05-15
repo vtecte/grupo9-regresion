@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+*_cache/
+*_files/
+*.log
+*.aux
+*.out
+*.toc
+*.synctex.gz
+.DS_Store          
+Thumbs.db
