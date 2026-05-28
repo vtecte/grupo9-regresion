@@ -17,7 +17,7 @@ library(GGally)
 library(corrplot)
 library(gridExtra)
 library(car)        # para vif() más adelante; útil ya en EDA
-
+library(dplyr)
 # ── 1. Carga y preparación ───────────────────────────────────
 # (construido sobre EDA_GM.R existente)
 datos_incendios <- read.csv("data/forestfires.csv")
@@ -125,6 +125,15 @@ grid.arrange(p_mes, p_dia, ncol = 2)
 # incluir esas dummies mejora la especificación de E(Y|X) = Xβ.
 # Esto es exactamente el ANOVA de un factor escrito como regresión
 # (semana 4, sección 17).
+
+tabla_meses<-datos_limpios %>%
+  group_by(month) %>%
+    summarise(
+      cantidad_incendios = n(),
+      promedio_area      = round(mean(log_area), 2)
+    ) %>%
+    arrange(month)
+tabla_meses
 
 # ── 6. Scatter plots: predictores vs log(area+1) ─────────────
 # Justificación: el supuesto A1 exige linealidad en E(Y|X).
