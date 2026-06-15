@@ -37,9 +37,9 @@ p_s  <- length(coef(M_sel))
 # ""puro"" de la temperatura tras restar el efecto lineal del viento y la humedad."
 
 cat("--- Gráfico de residuos componente + residuo (crPlots) ---\n")
-pdf("figuras/fig3_crplots.pdf", width = 12, height = 8)
+pdf("figuras/fig4_crplots.pdf", width = 12, height = 8)
 crPlots(M_sel,
-        main = "Figura 3: Residuos componente + residuo (crPlots)",
+        main = "Figura 4: Residuos componente + residuo (crPlots)",
         smooth = list(smoother = loessLine))
 dev.off()
 
@@ -60,10 +60,10 @@ dev.off()
 # IC e IP). Supuesto A5: ε|X ~ Nₙ(0, σ²Iₙ).
 
 # QQ-plot de residuos estandarizados
-pdf("figuras/fig4_qqplot_residuos.pdf", width = 6, height = 6)
+pdf("figuras/fig5_qqplot_residuos.pdf", width = 6, height = 6)
 r_std <- rstandard(M_sel)    # residuos estandarizados ri = ei / (S√(1-hii))
 qqnorm(r_std,
-       main  = "Figura 4: QQ-plot de residuos estandarizados",
+       main  = "Figura 5: QQ-plot de residuos estandarizados",
        xlab  = "Cuantiles N(0,1) teóricos",
        ylab  = "Cuantiles muestrales",
        pch   = 19, cex = 0.6, col = "#00000077")
@@ -88,14 +88,14 @@ print(test_norm)
 # Supuesto A3: Cov(ε|X) = σ²Iₙ
 
 # Gráfico: residuos vs ajustados (diagnóstico visual central)
-pdf("figuras/fig5_residuos_ajustados.pdf", width = 10, height = 5)
+pdf("figuras/fig6_residuos_ajustados.pdf", width = 10, height = 5)
 par(mfrow = c(1, 2))
 
 # Panel izquierdo: residuos ordinarios vs ajustados
 plot(fitted(M_sel), resid(M_sel),
      xlab = "Valores ajustados Ŷ",
      ylab = "Residuos eᵢ",
-     main = "Figura 5a: Residuos vs Ajustados",
+     main = "Figura 6a: Residuos vs Ajustados",
      pch = 19, cex = 0.5, col = "#00000077")
 abline(h = 0, col = "red", lty = 2)
 lines(lowess(fitted(M_sel), resid(M_sel)), col = "#ED7D31", lwd = 2)
@@ -106,7 +106,7 @@ sqrt_std <- sqrt(abs(rstandard(M_sel)))
 plot(fitted(M_sel), sqrt_std,
      xlab = "Valores ajustados Ŷ",
      ylab = "√|Residuos estand.|",
-     main = "Figura 5b: Scale-Location",
+     main = "Figura 6b: Scale-Location",
      pch = 19, cex = 0.5, col = "#00000077")
 lines(lowess(fitted(M_sel), sqrt_std), col = "#ED7D31", lwd = 2)
 par(mfrow = c(1, 1))
@@ -131,11 +131,11 @@ print(test_bp)
 h_ii <- hatvalues(M_sel)
 b_i  <- resid(M_sel)^2 / (1 - h_ii)
 
-pdf("figuras/fig6_bi_ajustados.pdf", width = 6, height = 5)
+pdf("figuras/fig7_bi_ajustados.pdf", width = 6, height = 5)
 plot(fitted(M_sel), b_i,
      xlab = "Valores ajustados Ŷ",
      ylab = expression(b[i] == e[i]^2 / (1-h[ii])),
-     main = "Figura 6: Estadístico bᵢ (dispersión corregida por leverage)",
+     main = "Figura 7: Estadístico bᵢ (dispersión corregida por leverage)",
      pch  = 19, cex = 0.5, col = "#00000077")
 abline(h = mean(b_i), col = "red", lty = 2)
 lines(lowess(fitted(M_sel), b_i), col = "#4472C4", lwd = 2)
@@ -185,9 +185,9 @@ print(test_dw)
 # del parque agrupadas en el dataset (estructura espacial)
 
 # Función de autocorrelación (ACF) de residuos
-pdf("figuras/fig7_acf_residuos.pdf", width = 7, height = 5)
+pdf("figuras/fig8_acf_residuos.pdf", width = 7, height = 5)
 acf(resid(M_sel),
-    main  = "Figura 7: ACF de residuos del modelo seleccionado",
+    main  = "Figura 8: ACF de residuos del modelo seleccionado",
     xlab  = "Rezago",
     ylab  = "Autocorrelación",
     lag.max = 20)
@@ -237,13 +237,13 @@ print(data.frame(
 ))
 
 # Gráfico resumen de influencia
-pdf("figuras/fig8_influencia.pdf", width = 12, height = 10)
+pdf("figuras/fig9_influencia.pdf", width = 12, height = 10)
 par(mfrow = c(2, 2))
 
 # Leverage
 plot(h_ii, type = "h",
      ylab = expression(h[ii]),
-     main = "Figura 8a: Leverage por observación",
+     main = "Figura 9a: Leverage por observación",
      col  = ifelse(h_ii > umbral_h, "#ED7D31", "#4472C4"))
 abline(h = umbral_h, col = "red", lty = 2)
 legend("topright", c(paste0("h > ", round(umbral_h,3)), "h normal"),
@@ -252,14 +252,14 @@ legend("topright", c(paste0("h > ", round(umbral_h,3)), "h normal"),
 # Residuos estudentizados externos
 plot(r_stud, type = "h",
      ylab = expression(t[i]),
-     main = "Figura 8b: Residuos estudentizados externos",
+     main = "Figura 9b: Residuos estudentizados externos",
      col  = ifelse(abs(r_stud) > umbral_t, "#ED7D31", "#4472C4"))
 abline(h = c(-umbral_t, umbral_t), col = "red", lty = 2)
 
 # Distancia de Cook
 plot(cook_d, type = "h",
      ylab = expression(D[i]),
-     main = "Figura 8c: Distancia de Cook",
+     main = "Figura 9c: Distancia de Cook",
      col  = ifelse(cook_d > umbral_dk, "#ED7D31", "#4472C4"))
 abline(h = umbral_dk, col = "red", lty = 2)
 # Identificar los puntos más influyentes
@@ -269,7 +269,7 @@ text(top5, cook_d[top5], labels = top5, pos = 3, cex = 0.7, col = "darkred")
 plot(h_ii, abs(r_stud),
      xlab = expression(h[ii]),
      ylab = expression("|"*t[i]*"|"),
-     main = "Figura 8d: Leverage vs. |Residuo estudentizado|",
+     main = "Figura 9d: Leverage vs. |Residuo estudentizado|",
      pch  = 19, cex = 0.5, col = "#00000055")
 abline(v = umbral_h, h = umbral_t, col = "red", lty = 2)
 # Cuadrante superior derecho = casos potencialmente influyentes

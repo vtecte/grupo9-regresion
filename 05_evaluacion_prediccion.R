@@ -11,7 +11,6 @@
 
 # Requiere: M_sel, M0, M_met, M_fwi, M_full, train, test
 
-
 # ============================================================
 # 6.1 TABLA DE INFERENCIA DEL MODELO SELECCIONADO
 # ============================================================
@@ -154,7 +153,7 @@ cat("Cobertura: ", round(cobertura, 4),
 # ============================================================
 # 6.7 GRÁFICOS DE PREDICCIÓN
 # ============================================================
-pdf("figuras/fig9_predicciones_test.pdf", width = 12, height = 5)
+pdf("figuras/fig10_predicciones_test.pdf", width = 12, height = 5)
 par(mfrow = c(1, 2))
 
 # Panel 1: predicho vs real (escala log)
@@ -162,7 +161,7 @@ lim  <- range(c(real_log, pred_log, ip_test))
 plot(real_log, pred_log,
      xlab = "log(area+1) observado (test)",
      ylab = "log(area+1) predicho",
-     main = "Figura 9a: Predicciones vs. Valores reales",
+     main = "Predicciones vs. Valores reales",
      pch  = 19, cex = 0.6, col = "#00000077",
      xlim = lim, ylim = lim)
 abline(0, 1, col = "red", lty = 2, lwd = 1.5)
@@ -175,7 +174,7 @@ legend("topleft",
 plot(real_log, pred_log,
      xlab = "log(area+1) observado (test)",
      ylab = "Predicción e IP 95%",
-     main = "Figura 9b: Intervalos de predicción 95%",
+     main = "Figura 10b: Intervalos de predicción 95%",
      pch  = 19, cex = 0.5, col = "#00000077",
      ylim = lim)
 arrows(real_log, ip_test[,"lwr"], real_log, ip_test[,"upr"],
@@ -190,7 +189,7 @@ legend("topleft",
        bty = "n", cex = 0.85)
 par(mfrow = c(1, 1))
 dev.off()
-cat("Figura 9 guardada en figuras/fig9_predicciones_test.pdf\n")
+cat("Figura 10 guardada en figuras/fig10_predicciones_test.pdf\n")
 
 
 # ============================================================

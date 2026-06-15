@@ -12,7 +12,7 @@
 # -- Paquetes ------------------------------------------------
 # Instalar si no están disponibles:
 #install.packages(c("car","lmtest","nortest","moments","MASS"))
-install.packages("stargazer")
+#install.packages("stargazer")
 library(car)      # vif(), crPlots(), avPlots()
 library(lmtest)   # bptest(), dwtest()
 library(nortest)  # lillie.test() - Kolmogorov-Smirnov con corrección Lilliefors
@@ -79,6 +79,10 @@ print(round(tabla_resp, 3))
 # Un skewness(area) > 3-4 y kurtosis >> 3 justifica la transformación
 # Skewness cercano a 0 en log(area+1) indica mejora clara (nose si sale en clases)
 
+## Proporción de ceros 
+
+prop_cero <- mean(datos$area == 0)
+cat(sprintf("\nProporción con area = 0: %.1f%%\n", prop_cero * 100))
 
 # 1.2 Justificación formal de excluir "rain" -----------------
 cat("\n--- Variable rain: justificación de exclusión ---\n")
@@ -98,7 +102,11 @@ cat("\n--- Distribución de incendios por día ---\n")
 print(table(datos$day))
 # Argumento: no hay mecanismo físico por el que el día de la semana
 # cambie el comportamiento del fuego. si es que hay alguna 
-# variación puede deberse al  registro. Se verifica con F-test (pendiente).
+# variación puede deberse al  registro. Se verifica con F-test (pendiente).)
+
+# Test de levene, para comprobar que las varianzas de day son homogeneas. 
+levene_day <- leveneTest(log_area ~ day, data = datos)
+print(levene_day)
 
 
 # 1.4 Descriptivos de predictores numéricos ------------------
@@ -130,6 +138,11 @@ res_mes <- tapply(datos$log_area, datos$month, function(x)
 print(do.call(rbind, res_mes))
 # Los meses con n=1 o n=2 (nov: 1, jan: 2, may: 2) son problemáticos (lo pusimos 
 # en el avance) → argumento para agrupar en estaciones (ver Bloque 2)
+
+# Test de levene, para comprobar que las varianzas de day son homogeneas. 
+levene_mes <- leveneTest(log_area ~ month, data = datos)
+print(levene_mes)
+
 
 
 # 1.6 Matriz de correlación (predictores numéricos + respuesta)--
